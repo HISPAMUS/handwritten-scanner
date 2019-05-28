@@ -1,3 +1,7 @@
+# Handwritten scores scanner
+
+Mobile app for scanning handwritten scores. This is a frontend application integrated with the services provided by the [Copymus web server](https://github.com/HISPAMUS/copymus-webservices).
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

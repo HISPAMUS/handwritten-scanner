@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Escáner de partituras",
+  "name": "Escáner de partituras manuscritas - Proyecto HISPAMUS",
   "icons": [
     {
       "src": "favicon.ico",

@@ -1,0 +1,66 @@
+body {
+    font-family: Roboto, sans-serif;
+    color: rgb(13, 5, 8);
+}
+
+h1, h2, h3, h4, h5, .h1, .h2, .h3, .h4, .h5 {
+    font-family: 'Playfair Display', serif;
+}
+
+a {
+    color: rgb(86, 128, 143);
+}
+
+a:hover {
+    color: rgb(13, 5, 8);
+}
+
+.btn-primary {
+    background-color: rgb(86, 128, 143);
+    border: 0;
+}
+
+.btn-primary:hover {
+    background-color: rgb(13, 5, 8);
+}
+
+.btn-link {
+    color: rgb(86, 128, 143);
+}
+
+.btn-link:hover {
+    color: rgb(13, 5, 8);
+}
+
+.skeleton {
+    animation: skeleton-pulse 2s infinite ease-in-out;
+    background-color: rgba(13, 5, 8, 0.3);
+}
+
+.info-blink {
+    animation: info-pulse 2s infinite ease-in-out;
+}
+
+@keyframes skeleton-pulse {
+    0% {
+        background-color: rgba(13, 5, 8, 0.1);
+    }
+    50% {
+        background-color: rgba(13, 5, 8, 0.3);
+    }
+    100% {
+        background-color: rgba(13, 5, 8, 0.1);
+    }
+}
+
+@keyframes info-pulse {
+    0% {
+        color: rgba(86, 128, 143, 1.0);
+    }
+    50% {
+        color: rgba(86, 128, 143, 0.3);
+    }
+    100% {
+        color: rgba(86, 128, 143, 1.0);
+    }
+}
