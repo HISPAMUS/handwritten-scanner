@@ -1,2 +1,2 @@
-export const RANDOMURL = '/api/scanner/random/test';
-export const UPLOADURL = '/api/scanner/upload';
+export const RANDOMURL = '/copymus/api/scanner/random/primus';
+export const UPLOADURL = '/copymus/api/scanner/upload';
