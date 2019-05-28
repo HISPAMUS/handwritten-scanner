@@ -1,11 +1,11 @@
 import React from 'react';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import { MemoryRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './components/Home';
 import Scanner from './components/scanner/Scanner';
 
 function App() {
   return (
-    <Router basename="/copymus/scanner">
+    <Router>
       <div className="container-fluid">
         <Switch>
           <Route exact path="/" component={Home} />

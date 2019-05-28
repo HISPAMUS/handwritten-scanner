@@ -46,7 +46,7 @@ export default function ScoreScreen(props) {
       <div className="overflow-auto mt-3" style={{ transform: "rotate(0)" }}>
         <div className="d-inline-block">
           <button
-            className="btn btn-link stretched-link text-dark"
+            className="btn btn-link text-dark"
             onClick={toggleZoom}
           >
             <i className={"fas fa-search-" + (zoom ? "minus" : "plus")} />
@@ -56,6 +56,7 @@ export default function ScoreScreen(props) {
           className={zoom ? "" : "img-fluid"}
           alt="score"
           src={`data:image/png;base64,${props.score.png}`}
+          onClick={toggleZoom}
         />
       </div>
     </div>
