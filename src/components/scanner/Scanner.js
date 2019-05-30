@@ -1,11 +1,13 @@
 import React, { useEffect, useReducer } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
 import LoadingScreen from "./LoadingScreen";
-import MessageScreen from "./MessageScreen";
+import RetryScreen from "./RetryScreen";
 import ScoreScreen from "./ScoreScreen";
-import ScanScreen from "./ScanScreen";
+import CropScreen from "./CropScreen";
 import UploadScreen from "./UploadScreen";
 
 import { RANDOMURL } from "../../Api";
@@ -22,30 +24,46 @@ export const ScannerState = {
 };
 
 const initialState = {
+  reset: true,
   loading: false,
   error: false,
   score: undefined,
   selectedImage: undefined,
-  croppedImage: undefined,
-  finished: false
+  croppedImage: undefined
 };
 
 function reducer(state, action) {
+  if (!process.env.NODE_ENV || process.env.NODE_ENV === "development")
+    console.log(`action=${action.type}`);
+
   switch (action.type) {
     case ScannerState.LOADING_SCORE:
-      return { ...state, loading: true };
+      return { ...state, reset: false, loading: true };
     case ScannerState.LOAD_ERROR:
-      return { ...state, loading: true, error: true };
+      toast.error("Error al cargar la partitura");
+      return { ...state, error: true };
     case ScannerState.LOADED_SCORE:
-      return { ...state, loading: false, error: false, score: action.payload };
+      return {
+        ...state,
+        loading: false,
+        score: action.payload,
+        selectedImage: undefined // In case it comes from CropScreen.onCancel
+      };
     case ScannerState.LOADED_IMAGE:
-      return { ...state, selectedImage: action.payload };
+      return {
+        ...state,
+        error: false,
+        selectedImage: action.payload,
+        croppedImage: undefined
+      };
     case ScannerState.CROPPED_IMAGE:
-      return { ...state, croppedImage: action.payload };
+      return { ...state, error: false, croppedImage: action.payload };
     case ScannerState.UPLOAD_ERROR:
+      toast.error("Error al enviar la imagen");
       return { ...state, error: true };
     case ScannerState.UPLOADED_IMAGE:
-      return { ...initialState, finished: true };
+      toast.success("¡Muchas gracias por colaborar!");
+      return initialState;
     case ScannerState.RESET:
       return initialState;
     default:
@@ -56,10 +74,10 @@ function reducer(state, action) {
 export default function Scanner() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  function reset() {
-    dispatch({ type: ScannerState.RESET });
-    loadScore();
-  }
+  useEffect(() => {
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === "development")
+      console.log(state);
+  }, [state]);
 
   function loadScore() {
     dispatch({ type: ScannerState.LOADING_SCORE });
@@ -86,34 +104,34 @@ export default function Scanner() {
     reader.readAsDataURL(file);
   }
 
-  function uploadCroppedImage(image) {
-    dispatch({ type: ScannerState.CROPPED_IMAGE, payload: image });
-  }
-
   useEffect(() => {
-    loadScore();
-  }, []);
+    if (state.reset) loadScore();
+  }, [state.reset]);
 
   return (
     <>
       <Header small />
       {state.loading && !state.error && <LoadingScreen />}
       {state.loading && state.error && (
-        <MessageScreen
-          variant="danger"
-          text="Ha ocurrido un error al cargar la imagen"
-          onReset={reset}
-        />
+        <RetryScreen onReset={() => dispatch({ type: ScannerState.RESET })} />
       )}
       {state.score && !state.selectedImage && (
         <ScoreScreen
           score={state.score}
           onSelect={loadSelectedImage}
-          onReset={reset}
+          onReset={() => dispatch({ type: ScannerState.RESET })}
         />
       )}
       {state.selectedImage && !state.croppedImage && (
-        <ScanScreen image={state.selectedImage} onUpload={uploadCroppedImage} />
+        <CropScreen
+          image={state.selectedImage}
+          onUpload={image =>
+            dispatch({ type: ScannerState.CROPPED_IMAGE, payload: image })
+          }
+          onCancel={() =>
+            dispatch({ type: ScannerState.LOADED_SCORE, payload: state.score })
+          }
+        />
       )}
       {state.croppedImage && !state.error && (
         <UploadScreen
@@ -124,17 +142,13 @@ export default function Scanner() {
         />
       )}
       {state.croppedImage && state.error && (
-        <MessageScreen
-          variant="danger"
-          text="Ha ocurrido un error al enviar la imagen"
-          onReset={reset}
-        />
-      )}
-      {state.finished && (
-        <MessageScreen
-          variant="success"
-          text="¡Gracias por colaborar!"
-          onReset={reset}
+        <RetryScreen
+          onReset={() =>
+            dispatch({
+              type: ScannerState.LOADED_IMAGE,
+              payload: state.selectedImage
+            })
+          }
         />
       )}
       <Footer />

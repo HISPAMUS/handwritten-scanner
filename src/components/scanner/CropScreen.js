@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 
-export default function ScanScreen(props) {
+export default function CropScreen(props) {
   const [image, setImage] = useState(undefined);
   const [crop, setCrop] = useState({
     x: 10,
@@ -43,7 +43,7 @@ export default function ScanScreen(props) {
         height
       );
 
-      canvas.toBlob(encodeBlob, 'image/png');
+      canvas.toBlob(encodeBlob, "image/png");
     }
   }
 
@@ -51,10 +51,16 @@ export default function ScanScreen(props) {
     <>
       <div className="w-100 mt-3">
         <button
-          className="btn btn-primary btn-block mb-3"
+          className="btn btn-danger btn-block mb-3"
+          onClick={props.onCancel}
+        >
+          <i className="fas fa-times" /> Cancelar
+        </button>
+        <button
+          className="btn btn-success btn-block mb-3"
           onClick={getCroppedImage}
         >
-          Enviar
+          <i className="fas fa-cloud-upload-alt" /> Enviar
         </button>
         <ReactCrop
           src={props.image}
