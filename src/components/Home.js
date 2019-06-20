@@ -7,7 +7,7 @@ import Footer from "./layout/Footer";
 
 export default function Home() {
   return (
-    <div>
+    <>
       <Header />
 
       <div className="row px-3">
@@ -25,6 +25,6 @@ export default function Home() {
       </div>
 
       <Footer />
-    </div>
+    </>
   );
 }

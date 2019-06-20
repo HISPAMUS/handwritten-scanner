@@ -17,11 +17,11 @@ export default function ScoreScreen(props) {
   return (
     <div className="w-100 mt-2">
       <div className="d-flex flex-column flex-sm-row justify-content-sm-end">
-        <button className="btn btn-danger mb-3 mx-1" onClick={props.onReset}>
+        <button className="btn btn-danger mb-3 mx-0 mx-sm-1" onClick={props.onReset}>
           <i className="fas fa-sync" /> Cargar otra
         </button>
         <label
-          className="btn btn-success mb-3 mx-1"
+          className="btn btn-success mb-3 mx-0 mx-sm-1"
           htmlFor="inputImage"
           title="Escanear"
         >
@@ -48,7 +48,7 @@ export default function ScoreScreen(props) {
           onClick={toggleZoom}
         />
       </div>
-      <div className="w-100 mt-3 text-center">
+      <div className="w-100 mt-3 text-center mb-5">
         <button
           className="btn btn-link text-dark text-decoration-none"
           onClick={toggleZoom}
